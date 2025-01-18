@@ -295,7 +295,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         <div className="flex gap-2 justify-between mb-4">
           <button
             onClick={() => setDateModalOpen(true)}
-            className="bg-purple-400 px-3 py-3 rounded-full"
+            className="bg-[#4361ee] px-3 py-3 rounded-full"
           >
             <svg
               width="15px"
@@ -321,7 +321,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
           </button>
           <button
             onClick={() => setNameModalOpen(true)}
-            className="bg-purple-400 px-3 py-3 rounded-full"
+            className="bg-[#4361ee] px-3 py-3 rounded-full"
           >
             <svg
               width="15px"

@@ -18,16 +18,6 @@ interface Category {
   __v: number;
 }
 
-interface Recipient {
-  _id: string;
-  name: string;
-  phoneNumber: number;
-  user: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
-
 interface Transaction {
   _id: string;
   amount: number;
@@ -35,7 +25,6 @@ interface Transaction {
   category: Category;
   date: string;
   user: string;
-  recipient: Recipient;
   createdAt: string;
   updatedAt: string;
   __v: number;
@@ -168,49 +157,49 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
 
   // Filter transactions by Name
 
-  const handleFilterByName = () => {
-    if (!filterName) {
-      // If filterName is empty, reset to original transactions
-      setTransactions(originalTransactions);
-    } else {
-      const filteredTransactions = originalTransactions.filter(
-        (transaction) => {
-          return (
-            transaction.recipient.name &&
-            typeof transaction.recipient.name === "string" &&
-            transaction.recipient.name.includes(filterName)
-          );
-        }
-      );
+  // const handleFilterByName = () => {
+  //   if (!filterName) {
+  //     // If filterName is empty, reset to original transactions
+  //     setTransactions(originalTransactions);
+  //   } else {
+  //     const filteredTransactions = originalTransactions.filter(
+  //       (transaction) => {
+  //         return (
+  //           transaction.name &&
+  //           typeof transaction.name === "string" &&
+  //           transaction.name.includes(filterName)
+  //         );
+  //       }
+  //     );
 
-      setTransactions(filteredTransactions);
-    }
-    setNameModalOpen(false);
-  };
+  //     setTransactions(filteredTransactions);
+  //   }
+  //   setNameModalOpen(false);
+  // };
 
-  // Ensure to clear the filterName and reset transactions when the user clears the filter
-  const clearNameFilter = async () => {
-    setFilterName("");
+  // // Ensure to clear the filterName and reset transactions when the user clears the filter
+  // const clearNameFilter = async () => {
+  //   setFilterName("");
 
-    try {
-      // Re-fetch all transactions
-      const response = await fetch(`/api/transactions/${type}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+  //   try {
+  //     // Re-fetch all transactions
+  //     const response = await fetch(`/api/transactions/${type}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+  //       },
+  //     });
 
-      if (response.ok) {
-        const data = await response.json();
-        setTransactions(data);
-        setOriginalTransactions(data);
-      }
-    } catch (error) {
-      console.error("Error fetching transactions:", error);
-    }
+  //     if (response.ok) {
+  //       const data = await response.json();
+  //       setTransactions(data);
+  //       setOriginalTransactions(data);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching transactions:", error);
+  //   }
 
-    setNameModalOpen(false);
-  };
+  //   setNameModalOpen(false);
+  // };
 
   // Handle date range change
 
@@ -276,7 +265,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
 
   return (
     <motion.div
-      className="max-w-xl mx-auto p-6 mb-32"
+      className=" mx-auto w-full max-w-3xl p-4 rounded-lg overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -319,47 +308,18 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
               </g>
             </svg>
           </button>
-          <button
-            onClick={() => setNameModalOpen(true)}
-            className="bg-[#4361ee] px-3 py-3 rounded-full"
-          >
-            <svg
-              width="15px"
-              height="15px"
-              viewBox="0 0 24 24"
-              fill="#ffffff"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-              <g
-                id="SVGRepo_tracerCarrier"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              ></g>
-              <g id="SVGRepo_iconCarrier">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M15 10.5A3.502 3.502 0 0 0 18.355 8H21a1 1 0 1 0 0-2h-2.645a3.502 3.502 0 0 0-6.71 0H3a1 1 0 0 0 0 2h8.645A3.502 3.502 0 0 0 15 10.5zM3 16a1 1 0 1 0 0 2h2.145a3.502 3.502 0 0 0 6.71 0H21a1 1 0 1 0 0-2h-9.145a3.502 3.502 0 0 0-6.71 0H3z"
-                  fill="#ffffff"
-                ></path>
-              </g>
-            </svg>
-          </button>
         </div>
       </div>
 
-      <div className=" rounded-xl overflow-x-auto shadow-lg">
+      <div className=" rounded-xl shadow-lg">
         {transactions.length > 0 ? (
-          <table className="w-full overflow-x-auto">
+          <table className=" w-full mx-auto rounded-xl">
             <thead>
               <tr className="border-b bg-slate-500 text-white">
                 <th className="text-center py-2 text-sm">تاریخ</th>
                 <th className="text-center py-2">توضیحات</th>
                 <th className="text-center py-2">مبلغ</th>
-                <th className="">
-                  {type === "incomes" ? "فرستنده" : "گیرنده"}
-                </th>
+               
               </tr>
             </thead>
             <tbody className="text-center">
@@ -390,11 +350,6 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
 
                     {transaction.amount}
                     <span className="ml-1 text-[0.5rem]"> تومان</span>
-                  </td>
-                  <td className="py-3 text-gray-600 text-center">
-                    {type === "incomes"
-                      ? transaction.recipient.name
-                      : transaction.recipient.name}
                   </td>
                 </tr>
               ))}
@@ -510,81 +465,12 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                   {selectedTransaction!.amount} تومان
                 </p>
               </div>
-              <div>
-                <p className="text-gray-200">
-                  {type === "incomes" ? "فرستنده" : "گیرنده"}:
-                </p>
-                <p className="text-white font-bold">
-                  {selectedTransaction!.recipient.name}
-                </p>
-              </div>
             </div>
           </motion.div>
         </motion.div>
       )}
 
       {/* Custom Name Filter Modal */}
-      {isNameModalOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 backdrop-blur-sm flex items-center justify-center z-50"
-          dir="rtl"
-        >
-          <div className="bg-white bg-opacity-85 border border-black/50 backdrop-blur-xl rounded-xl p-8 w-96 mx-4">
-            <h2 className="text-xl font-bold text-purple-400 text-center pb-3 border-b-2 border-gray-300 mb-4">
-              فیلتر بر اساس نام
-            </h2>
-            <input
-              type="text"
-              value={filterName}
-              onChange={(e) => {
-                setFilterName(e.target.value);
-                if (!e.target.value) {
-                  clearNameFilter(); // Call clearFilter when input is emptied
-                }
-              }}
-              placeholder="نام را وارد کنید"
-              className="border p-2 mb-4 w-full rounded-lg focus:outline-none focus:ring-purple-500 focus:ring-1"
-              dir="rtl"
-            />
-            {filterName && (
-              <div
-                className="flex items-center bg-purple-100 p-1 rounded-xl justify-between mb-4"
-                dir="rtl"
-              >
-                <span className="text-gray-400 text-sm">
-                  فیلتر شده بر اساس: {filterName}
-                </span>
-                <button
-                  onClick={clearNameFilter} // Use clearFilter to reset transactions
-                  className="text-red-500 font-bold ml-2"
-                >
-                  X
-                </button>
-              </div>
-            )}
-            <div className="flex justify-between">
-              <button
-                onClick={handleFilterByName}
-                className="bg-green-500 text-white px-4 py-2 rounded"
-              >
-                اعمال فیلتر
-              </button>
-              <button
-                onClick={() => {
-                  setFilterName(""); // Clear filterName on close
-                  setNameModalOpen(false);
-                }}
-                className="bg-rose-500 text-white px-4 py-2 rounded"
-              >
-                بستن
-              </button>
-            </div>
-          </div>
-        </motion.div>
-      )}
     </motion.div>
   );
 };

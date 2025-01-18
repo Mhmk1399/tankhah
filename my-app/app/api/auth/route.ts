@@ -57,8 +57,21 @@ export async function GET(request: NextRequest) {
     if (!token) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
+    const decodedToken = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "1234"
+    ) as jwt.JwtPayload;
+    console.log("Decoded token:", decodedToken);
 
-    const users = await User.findOne({});
+    if (!decodedToken) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    const user = await User.findById((decodedToken as jwt.JwtPayload).id);
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+    const users = await User.findOne({ _id: decodedToken.id });
+
     return NextResponse.json({ users }, { status: 200 });
   } catch (err: unknown) {
     console.error("Error fetching users:", err);

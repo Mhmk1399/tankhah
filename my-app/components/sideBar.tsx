@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import TransactionList from "./transactionList";
 import { useRouter } from "next/navigation";
+import Welcome from "./welcome";
 
 const SideBar = () => {
   const router = useRouter();
@@ -69,6 +70,7 @@ const SideBar = () => {
 
   return (
     <>
+      <Welcome />
       {renderComponent()}
 
       <button

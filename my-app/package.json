@@ -17,8 +17,10 @@
     "react-dom": "^19.0.0",
     "react-multi-date-picker": "^4.5.2"
   },
+  
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

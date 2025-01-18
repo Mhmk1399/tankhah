@@ -9,8 +9,10 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import TransactionList from "./transactionList";
+import { useRouter } from "next/navigation";
 
 const SideBar = () => {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [activeComponent, setActiveComponent] = useState<string | null>(null);
 
@@ -22,7 +24,7 @@ const SideBar = () => {
   const menuItems = [
     {
       id: "charge",
-      title: "ثبت شارژ تنخواه",
+      title: "درخواست شارژ تنخواه",
       icon: <Wallet className="w-6 h-6" />,
     },
     {
@@ -49,16 +51,17 @@ const SideBar = () => {
 
   const renderComponent = () => {
     switch (activeComponent) {
-      case "charge":
-        return <ChargeComponent />;
+      // case "charge":
+      //   return <ChargeComponent />;
       case "transactionIn":
         return <TransactionList type={"incomes"} />;
       case "transactionOut":
         return <TransactionList type={"outcomes"} />;
       case "payment":
-        return <PaymentComponent />;
-      case "help":
-        return <HelpComponent />;
+        router.push("/transactions");
+        return null;
+      // case "help":
+      //   return <HelpComponent />;
       default:
         return null;
     }
@@ -121,5 +124,4 @@ const SideBar = () => {
     </>
   );
 };
-
 export default SideBar;

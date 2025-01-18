@@ -24,15 +24,7 @@
     "react-hot-toast": "^2.5.1",
     "@heroicons/react": "^2.2.0",
     "bcrypt": "^5.1.1",
-    "date-fns-jalali": "^4.1.0-0",
-    "framer-motion": "^11.18.1",
-    "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.473.0",
-    "mongoose": "^8.9.5",
-    "next": "15.1.5",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-hot-toast": "^2.5.1",
     "react-multi-date-picker": "^4.5.2"
   },
   "devDependencies": {

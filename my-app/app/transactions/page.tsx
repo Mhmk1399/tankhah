@@ -90,22 +90,11 @@ const Page = () => {
       color: "",
       user: "",
     },
-    bankAccount: {
-      cardNumber: "",
-      accountBalance: "",
-      name: "",
-      _id: "",
-      user: "",
-    },
+  
     description: "",
     transactionType: transactionType,
     image: "",
-    recipient: {
-      _id: "",
-      name: "",
-      phoneNumber: "",
-      user: "",
-    },
+   
     Date: Date.now(),
   });
 
@@ -144,7 +133,7 @@ const Page = () => {
     
       // Convert amount string "1,234,567" to number 1234567
       const numericAmount = Number(formData.amount.replace(/,/g, ''));
-console.log(formData.bankAccount);
+
 
       const transactionData = {
         amount: numericAmount,

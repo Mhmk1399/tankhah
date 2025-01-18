@@ -14,8 +14,7 @@ export async function GET(req: NextRequest) {
         }
 
         const incomes = await income.find({ user: decoded.id })
-                .populate('user')
-
+        .populate('category')
         return NextResponse.json(incomes, { status: 200 });
     } catch (error) {
         return NextResponse.json({ message: "Error fetching outcomes",detials:error }, { status: 500 });

@@ -15,8 +15,6 @@ export async function GET(req: NextRequest) {
 
         const incomes = await Outcome.find({ user: decoded.id })
             .populate('category')
-            .populate('recipient')
-            .populate('bank');
 
         return NextResponse.json(incomes);
     } catch (error) {

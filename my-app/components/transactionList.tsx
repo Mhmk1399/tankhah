@@ -319,7 +319,6 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                 <th className="text-center py-2 text-sm">تاریخ</th>
                 <th className="text-center py-2">توضیحات</th>
                 <th className="text-center py-2">مبلغ</th>
-               
               </tr>
             </thead>
             <tbody className="text-center">

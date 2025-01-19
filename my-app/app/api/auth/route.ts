@@ -81,3 +81,52 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export async function PATCH(request: NextRequest) {
+  try {
+    await connect();
+    if (!connect) {
+      return NextResponse.json(
+        { message: "Error connecting to database" },
+        { status: 500 }
+      );
+    }
+    const token = request.headers.get("Authorization")?.split(" ")[1];
+    if (!token) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    const decodedToken = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "1234"
+    ) as jwt.JwtPayload;
+    console.log("Decoded token:", decodedToken);
+    if (!decodedToken) {
+      return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+    }
+    const user = await User.findById((decodedToken as jwt.JwtPayload).id);
+    if (!user) {
+      return NextResponse.json({ message: "User not found" }, { status: 404 });
+    }
+    const { name, phoneNumber,
+      password,
+      role,
+    } =
+      await request.json();
+
+    user.name = name;
+    user.phoneNumber = phoneNumber;
+    user.password = password;
+    user.role = role;
+
+
+    await user.save();
+    return NextResponse.json({ message: "User updated successfully" }, { status: 200 });
+  } catch (err: unknown) {
+    console.error("Error updating user:", err);
+    return NextResponse.json(
+      { message: "خطا در به روز رسانی کاربر" },
+      { status: 500 }
+    );
+  }
+}
+

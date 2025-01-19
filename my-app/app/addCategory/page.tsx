@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { toast, Toaster } from 'react-hot-toast'
 
@@ -8,16 +8,24 @@ const Page = () => {
     name: '',
     color: '#000000'
   })
+  const [isClient, setIsClient] = useState(false)
 
+  useEffect(() => {
+    setIsClient(true)
+    if (!localStorage.getItem("token")) {
+      window.location.href = "/login"
+    }
+  }, [])
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
       
     try {
+      const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null
       const response = await fetch('/api/categories', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
       })
@@ -67,9 +75,14 @@ const Page = () => {
       [name]: value
     }))
   }
-
+  if (!isClient) {
+    return null // or a loading spinner
+  }
+  if (localStorage.getItem("token") === null) {
+    window.location.href = "/login";
+  }
   return (
-    <div className={` font-ray bg-purple-50 w-full pt-5 pb-20 h-full`} dir="rtl">
+    <div className={` font-ray bg-white/80 w-full pt-5 pb-20 h-full`} dir="rtl">
     <Toaster position="top-center" />
 
       <div className="max-w-3xl mx-auto">
@@ -77,7 +90,7 @@ const Page = () => {
           افزودن دسته‌بندی جدید
         </h1>
 
-        <form onSubmit={handleSubmit} className="space-y-4 bg-purple-50 rounded-xl p-6">
+        <form onSubmit={handleSubmit} className="space-y-4  rounded-xl p-6">
           <div className="space-y-4">
             <input
               type="text"
@@ -104,7 +117,7 @@ const Page = () => {
           <motion.button
             whileTap={{ scale: 0.95 }}
             type="submit"
-            className="w-full py-4 rounded-lg text-white font-medium shadow-lg bg-purple-500 hover:bg-purple-600 transition-colors"
+            className="w-full py-4 rounded-lg text-white font-medium shadow-lg bg-blue-500 hover:bg-blue-600 transition-colors"
           >
             ثبت دسته‌بندی
           </motion.button>

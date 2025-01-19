@@ -1,3 +1,4 @@
+import handleTokenExpiration from "@/lib/handleTokenExpiration";
 import React, { useEffect, useState } from "react";
 
 const Welcome = () => {
@@ -5,6 +6,9 @@ const Welcome = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
+      if (localStorage.getItem("token") === null) {
+        window.location.href = "/login";
+      }
       try {
         const response = await fetch("/api/auth", {
           method: "GET",
@@ -15,6 +19,12 @@ const Welcome = () => {
         const data = await response.json();
 
         setUserData(data.users);
+        if (response.status === 401|| localStorage.getItem("token") === null) {
+          
+          const error = new Error("Token is expired");
+          handleTokenExpiration(error);
+        }
+
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

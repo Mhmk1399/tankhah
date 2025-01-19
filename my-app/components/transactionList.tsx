@@ -17,7 +17,6 @@ interface Category {
   updatedAt: string;
   __v: number;
 }
-
 interface Transaction {
   _id: string;
   amount: number;
@@ -29,7 +28,6 @@ interface Transaction {
   updatedAt: string;
   __v: number;
 }
-
 interface StartDate {
   year: number;
   month: number;
@@ -38,7 +36,6 @@ interface StartDate {
 
 const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [isNameModalOpen, setNameModalOpen] = useState(false);
   const [isDateModalOpen, setDateModalOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] =
     useState<Transaction | null>(null);
@@ -54,7 +51,6 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
     day: 1,
   });
 
-  const [filterName, setFilterName] = useState("");
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
     null,
     null,
@@ -155,53 +151,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
     setDateModalOpen(false);
   };
 
-  // Filter transactions by Name
-
-  // const handleFilterByName = () => {
-  //   if (!filterName) {
-  //     // If filterName is empty, reset to original transactions
-  //     setTransactions(originalTransactions);
-  //   } else {
-  //     const filteredTransactions = originalTransactions.filter(
-  //       (transaction) => {
-  //         return (
-  //           transaction.name &&
-  //           typeof transaction.name === "string" &&
-  //           transaction.name.includes(filterName)
-  //         );
-  //       }
-  //     );
-
-  //     setTransactions(filteredTransactions);
-  //   }
-  //   setNameModalOpen(false);
-  // };
-
-  // // Ensure to clear the filterName and reset transactions when the user clears the filter
-  // const clearNameFilter = async () => {
-  //   setFilterName("");
-
-  //   try {
-  //     // Re-fetch all transactions
-  //     const response = await fetch(`/api/transactions/${type}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       },
-  //     });
-
-  //     if (response.ok) {
-  //       const data = await response.json();
-  //       setTransactions(data);
-  //       setOriginalTransactions(data);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching transactions:", error);
-  //   }
-
-  //   setNameModalOpen(false);
-  // };
-
-  // Handle date range change
+ 
 
   const handleDateRangeChange = (dates: DateObject[]) => {
     if (dates.length === 2) {
@@ -225,13 +175,11 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
     }
   };
 
-  // Handle the svg non Data
-
   const EmptyState = () => (
     <div className="flex flex-col items-center justify-center py-10">
       <svg
         className={`w-32 h-32 ${
-          type === "incomes" ? "text-emerald-200" : "text-rose-200"
+          type === "incomes" ? "text-emerald-200" : "text-blue-200"
         }`}
         viewBox="0 0 24 24"
         fill="none"
@@ -255,7 +203,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
       </svg>
       <p
         className={`mt-4 text-lg font-medium ${
-          type === "incomes" ? "text-emerald-600" : "text-rose-600"
+          type === "incomes" ? "text-blue-600" : "text-blue-600"
         }`}
       >
         {type === "incomes" ? "هنوز دریافتی ثبت نشده" : "هنوز پرداختی ثبت نشده"}
@@ -275,7 +223,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
           className={`text-xl font-bold px-4 mb-4 text-right ${
             type === "incomes"
               ? "text-emerald-600 border-r-4 border-emerald-500"
-              : "text-rose-600 border-r-4 border-rose-500"
+              : "text-blue-600 border-2 rounded-md p-2 border-blue-500"
           }`}
         >
           {type === "incomes" ? "لیست دریافتی‌ها" : "لیست پرداختی‌ها"}
@@ -315,8 +263,8 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         {transactions.length > 0 ? (
           <table className=" w-full mx-auto rounded-xl">
             <thead>
-              <tr className="border-b bg-slate-500 text-white">
-                <th className="text-center py-2 text-sm">تاریخ</th>
+              <tr className="border-b bg-slate-500 text-white ">
+                <th className="text-center text-sm">تاریخ</th>
                 <th className="text-center py-2">توضیحات</th>
                 <th className="text-center py-2">مبلغ</th>
               </tr>
@@ -327,8 +275,8 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
                   key={transaction._id}
                   className={`border-b hover:bg-gray-300 ${
                     type === "incomes"
-                      ? "hover:bg-emerald-100"
-                      : "hover:bg-red-100"
+                      ? "hover:bg-blue-100"
+                      : "hover:bg-blue-100"
                   } cursor-pointer transition-all duration-200`}
                   onClick={() => setSelectedTransaction(transaction)}
                 >
@@ -431,36 +379,36 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="bg-purple-400/15 border border-white/50 backdrop-blur-md p-6 w-full rounded-xl max-w-[90%]"
+            className="bg-white/80 border border-white/50 backdrop-blur-md p-5 w-full rounded-xl max-w-[90%]"
             onClick={(e: React.MouseEvent<HTMLDivElement>) =>
               e.stopPropagation()
             }
             dir="rtl"
           >
-            <h2 className="text-xl font-bold mb-4 text-white border-b pb-2">
+            <h2 className="text-xl font-bold mb-4 text-black border-b border-gray-400 pb-2">
               جزئیات تراکنش
             </h2>
             <div className="space-y-4">
               <div>
-                <p className="text-gray-200">تاریخ:</p>
-                <p className="text-white font-bold">
+                <p className="text-gray-700">تاریخ:</p>
+                <p className="text-black font-bold">
                   {format(new Date(selectedTransaction!.date), "yyyy/MM/dd")}
                 </p>
               </div>
               <div>
-                <p className="text-gray-200">توضیحات:</p>
-                <p className="text-white font-bold">
+                <p className="text-gray-700">توضیحات:</p>
+                <p className="text-black font-bold">
                   {selectedTransaction!.description}
                 </p>
               </div>
               <div>
-                <p className="text-gray-200">مبلغ:</p>
+                <p className="text-gray-700">مبلغ:</p>
                 <p
                   className={`font-bold ${
-                    type === "incomes" ? "text-emerald-400" : "text-rose-400"
+                    type === "incomes" ? "text-emerald-400" : "text-rose-500"
                   }`}
                 >
-                  {type === "incomes" ? "+" : "-"}
+                
                   {selectedTransaction!.amount} تومان
                 </p>
               </div>
@@ -469,7 +417,6 @@ const TransactionList: React.FC<TransactionListProps> = ({ type }) => {
         </motion.div>
       )}
 
-      {/* Custom Name Filter Modal */}
     </motion.div>
   );
 };

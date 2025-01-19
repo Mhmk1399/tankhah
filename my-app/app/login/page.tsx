@@ -16,12 +16,10 @@ export default function LoginPage() {
   const router = useRouter();
   const validateForm = () => {
     const newErrors: FormErrors = {};
-
     // Phone validation
     if (!phoneNumber.match(/^09[0-9]{9}$/)) {
       newErrors.phoneNumber = "شماره موبایل باید ۱۱ رقم و با ۰۹ شروع شود";
     }
-
     // Password validation
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/;
     if (!passwordRegex.test(password)) {
@@ -29,7 +27,6 @@ export default function LoginPage() {
     } else if (password.length < 6) {
       newErrors.password = "رمز عبور باید حداقل ۶ کاراکتر باشد";
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -57,9 +54,7 @@ export default function LoginPage() {
         // Store the token in localStorage
         localStorage.setItem("token", data.token);
         router.push("/"); // Redirect to dashboard or home page
-      } else {
-        setError(data.message);
-      }
+      } 
     } catch (err) {
       console.error(err);
       setError("ورود به سیستم با مشکل مواجه شد");
@@ -69,14 +64,14 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-purple-200">
-      <div className="max-w-md w-full mx-2 space-y-8 p-8 bg-white/50 rounded-xl shadow-lg">
+    <div className="min-h-screen flex items-center justify-center ">
+      <div className="max-w-md w-full mx-2 space-y-8 p-8 bg-white/50 rounded-xl shadow-lg  border-t ">
         <div>
           <h2
-            className="mt-6 text-center text-3xl font-bold text-purple-700 border-b border-purple-200 pb-2"
+            className="mt-6 text-center text-3xl font-bold text-black-700 border-b 0 pb-2"
             dir="rtl"
           >
-            رمز جیبتو بگو بریم توش :{")"}
+        ورود به حساب کاربری
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -86,14 +81,14 @@ export default function LoginPage() {
           <div className="rounded-md shadow-sm space-y-4">
             <div>
               <label htmlFor="phoneNumber" className="sr-only">
-                شماره همراه شما
+                شماره همراه 
               </label>
               <input
                 id="phoneNumber"
                 name="phoneNumber"
                 type="tel"
                 required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 ring-1  focus:z-10 sm:text-sm"
+                className="appearance-none rounded-lg relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none  ring-1  focus:z-10 sm:text-sm"
                 placeholder="شماره همراه خود را وارد کنید"
                 dir="rtl"
                 value={phoneNumber}
@@ -114,8 +109,8 @@ export default function LoginPage() {
                 name="password"
                 type="password"
                 required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 ring-1  focus:z-10 sm:text-sm"
-                placeholder="رمز جیبت !"
+                className="appearance-none rounded-lg relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none ring-1  focus:z-10 sm:text-sm"
+                placeholder="رمز ورود"
                 dir="rtl"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -140,7 +135,7 @@ export default function LoginPage() {
                 htmlFor="remember-me"
                 className="ml-2 block text-sm text-gray-900"
               >
-                رمز جیبم یادت باشه
+                مرا به خاطر بسپار
               </label>
             </div>
 
@@ -150,7 +145,7 @@ export default function LoginPage() {
                 href="/forgot-password"
                 className="font-medium text-blue-600 hover:text-blue-500"
               >
-                رمز جیبم یادم نیست
+                  فراموشی رمز عبور
               </Link>
             </div>
           </div>
@@ -159,9 +154,9 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300"
             >
-              {loading ? "در حال ورود به جیب" : "ورود به جیب مبارک"}
+              {loading ? "در حال ورود  " : "ورود به سیستم"}
             </button>
           </div>
         </form>
@@ -172,7 +167,7 @@ export default function LoginPage() {
               href="/register"
               className="font-medium text-blue-600 hover:text-blue-500"
             >
-              جیب نداری بسازم برات ؟
+              ثبت نام
             </Link>
           </p>
         </div>

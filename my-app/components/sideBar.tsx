@@ -9,11 +9,11 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import TransactionList from "./transactionList";
-import { useRouter } from "next/navigation";
 import Welcome from "./welcome";
-
+import { AddRequest } from "./addRequest";
+import { ManageRequests } from "./manageRequests";
+import TransactionsPage from "./transactinsPage";
 const SideBar = () => {
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [activeComponent, setActiveComponent] = useState<string | null>(null);
 
@@ -24,15 +24,11 @@ const SideBar = () => {
 
   const menuItems = [
     {
-      id: "charge",
+      id: "request",
       title: "درخواست شارژ تنخواه",
       icon: <Wallet className="w-6 h-6" />,
     },
-    {
-      id: "transactionIn",
-      title: "دریافتی‌ها",
-      icon: <ListOrdered className="w-6 h-6" />,
-    },
+    
     {
       id: "transactionOut",
       title: "پرداختی‌ها",
@@ -44,6 +40,12 @@ const SideBar = () => {
       icon: <CreditCard className="w-6 h-6" />,
     },
     { id: "help", title: "راهنمایی", icon: <HelpCircle className="w-6 h-6" /> },
+    {
+      id: "manageRequests",
+      title: "مدیریت درخواست‌ها",
+      icon: <Settings className="w-6 h-6" />,
+      
+    }
   ];
   const handleMenuClick = (id: string) => {
     setActiveComponent(id);
@@ -52,17 +54,16 @@ const SideBar = () => {
 
   const renderComponent = () => {
     switch (activeComponent) {
-      // case "charge":
-      //   return <ChargeComponent />;
       case "transactionIn":
         return <TransactionList type={"incomes"} />;
       case "transactionOut":
         return <TransactionList type={"outcomes"} />;
       case "payment":
-        router.push("/transactions");
-        return null;
-      // case "help":
-      //   return <HelpComponent />;
+      return  <TransactionsPage />;
+      case "request":
+        return <AddRequest />;
+      case "manageRequests":
+        return <ManageRequests />;
       default:
         return null;
     }
@@ -70,7 +71,7 @@ const SideBar = () => {
 
   return (
     <>
-      <Welcome />
+     {activeComponent==null&& <Welcome />}
       {renderComponent()}
 
       <button

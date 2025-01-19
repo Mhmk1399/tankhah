@@ -1,6 +1,6 @@
 const LoadingComponent = () => {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-purple-50 to-purple-200">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b">
       <div className="relative">
         {/* Animated dollar bills stack */}
         <div className="flex items-center">
@@ -24,12 +24,12 @@ const LoadingComponent = () => {
 
         <div className="mt-8 text-center">
           <h2
-            className="text-2xl font-bold text-purple-700 animate-pulse"
+            className="text-2xl font-bold animate-pulse"
             dir="rtl"
           >
             در حال بارگذاری ...
           </h2>
-          <p className="text-purple-600 mt-2">لطفاً چند لحظه صبر کنید</p>
+          <p className=" mt-2">لطفاً چند لحظه صبر کنید</p>
         </div>
       </div>
     </div>

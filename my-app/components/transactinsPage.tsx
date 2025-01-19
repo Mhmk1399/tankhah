@@ -1,86 +1,43 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-// import { rayBold } from "@/next-persian-fonts/ray"; // Ensure the module exists or remove this line
-import PriceInput from "../../components/priceInput";
-import LoadingComponent from '../../components/loading'
+import PriceInput from "./priceInput";
+import LoadingComponent from './loading'
 import toast from "react-hot-toast";
-interface Recipient {
-  _id: string;
-  name: string;
-  phoneNumber: string;
-  user: string;
-}
 
-const RecipientModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  if (!isOpen) return null;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
-    >
+const TransactionsPage = () => {
+  const CategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
+    if (!isOpen) return null;
+   
+    return (
       <motion.div
-        initial={{ scale: 0.95 }}
-        animate={{ scale: 1 }}
-        className="bg-purple-50 rounded-xl w-[90%] max-w-2xl h-[65vh] overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
       >
-        <div className="flex justify-between items-center p-4 border-b">
-          <h3 className="text-lg font-bold">افزودن گیرنده جدید</h3>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            ✕
-          </button>
-        </div>
-        <iframe src="/addRecipient" className="w-full h-[calc(100%-60px)]" />
+        <motion.div
+          initial={{ scale: 0.95 }}
+          animate={{ scale: 1 }}
+          className="bg-white/70 rounded-xl w-[90%] max-w-2xl h-[65vh] overflow-hidden"
+        >
+          <div className="flex justify-between items-center p-4 border-b bg-white">
+            <h3 className="text-lg font-bold">افزودن دسته‌بندی جدید</h3>
+            <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+              ✕
+            </button>
+          </div>
+          <iframe src="/addCategory" className="w-full h-[calc(100%-60px)] bg-white/80" />
+        </motion.div>
       </motion.div>
-    </motion.div>
-  );
-};
-
-const CategoryModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
-  if (!isOpen) return null;
-
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
-    >
-      <motion.div
-        initial={{ scale: 0.95 }}
-        animate={{ scale: 1 }}
-        className="bg-purple-50 rounded-xl w-[90%] max-w-2xl h-[65vh] overflow-hidden"
-      >
-        <div className="flex justify-between items-center p-4 border-b">
-          <h3 className="text-lg font-bold">افزودن دسته‌بندی جدید</h3>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            ✕
-          </button>
-        </div>
-        <iframe src="/addCategory" className="w-full h-[calc(100%-60px)]" />
-      </motion.div>
-    </motion.div>
-  );
-};
-const Page = () => {
+    );
+  };
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
-  const [isBankDropdownOpen, setBankDropdownOpen] = useState(false);
-  const [isRecipientDropdownOpen, setRecipientDropdownOpen] = useState(false);
-  const [transactionType, setTransactionType] = useState<"incomes" | "outcomes">(
-    "incomes"
-  );
-  const [isRecipientModalOpen, setIsRecipientModalOpen] = useState(false);
-  const [recipients, setRecipients] = useState<Recipient[]>([{
-    name: "",
-    phoneNumber: "",
-    _id: "",
-    user: "",
-  }]);
+
+  const transactionType= "incomes"
+
+
   const [loading, setLoading] = useState(true);
-  const [isCardModalOpen, setIsCardModalOpen] = useState(false);
   const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     amount: "",
@@ -94,7 +51,6 @@ const Page = () => {
     description: "",
     transactionType: transactionType,
     image: "",
-   
     Date: Date.now(),
   });
 
@@ -110,28 +66,12 @@ const Page = () => {
     user: "",
 
   }]);
-  const [banks, setBanks] = useState<{
-    cardNumber: string;
-    accountBalance: string;
-    name: string;
-    _id: string;
-    user: string;
-  }[]>([
-    {
-      user: "",
-      cardNumber: "",
-      accountBalance: "",
-      name: "",
-      _id: "",
-    },
-  ]);
+ 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     const postTransaction = async () => {
-      // Find the selected recipient from recipients array
-    
-      // Convert amount string "1,234,567" to number 1234567
+
       const numericAmount = Number(formData.amount.replace(/,/g, ''));
 
 
@@ -145,7 +85,7 @@ const Page = () => {
       console.log('transactionData', transactionData);
 
       try {
-        const response = await fetch(`/api/transactions/${transactionType}`, {
+        const response = await fetch(`/api/transactions/outcomes`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -171,21 +111,7 @@ const Page = () => {
     const numberOnly = value.replace(/\D/g, "");
     return numberOnly.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   };
-  const fetchRecipients = async () => {
-    try {
-      const response = await fetch('/api/recipients', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setRecipients(data.recipients);
-      }
-    } catch (error) {
-      console.error('Error fetching recipients:', error);
-    }
-  };
+ 
   const fetchCategories = async () => {
     try {
       const response = await fetch('/api/categories', {
@@ -203,37 +129,20 @@ const Page = () => {
 
     }
   };
-  const fetchBanks = async () => {
-    try {
-      const response = await fetch('/api/banks', {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-      if (response.ok) {
-        const data = await response.json();
-        setBanks(data);
-      }
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
-  };
+  
   useEffect(() => {
 
     const loading = async () => {
       await fetchCategories();
-      await fetchRecipients();
-      await fetchBanks();
+     
       setLoading(false);
     }
     loading();
   }, []);
-  useEffect(() => {
-    fetchRecipients();
-  }, [isRecipientModalOpen]);
-  useEffect(() => {
-    fetchBanks();
-  }, [isCardModalOpen]);
+  if (localStorage.getItem("token") === null) {
+    window.location.href = "/login";
+  }
+
   useEffect(() => {
     fetchCategories();
   }, [isCategoryModalOpen]);
@@ -264,18 +173,7 @@ const Page = () => {
         }
       }));
     }
-    else if (name === "recipient") {
-      const selectedRecipient = recipients.find(rec => rec._id === value);
-      setFormData(prev => ({
-        ...prev,
-        recipient: {
-          name: selectedRecipient?.name || "",
-          phoneNumber: selectedRecipient?.phoneNumber || "",
-          _id: selectedRecipient?._id || "",
-          user: selectedRecipient?.user || ""
-        }
-      }));
-    }
+ 
 
 
     else {
@@ -293,38 +191,15 @@ const Page = () => {
   if (!loading) {
     return (
       <div
-        className={` font-ray min-h-screen bg-purple-50 p-4 lg:p-8 w-full mb-24`}
+        className={` font-ray min-h-screen pt-0 p-4 lg:p-8 w-full mb-24`}
         dir="rtl"
       >
         <div className="max-w-7xl mx-auto">
-          <h1 className="text-2xl lg:text-4xl font-bold text-gray-800 mb-6 lg:mb-10 text-center">
+          <h1 className="text-2xl lg:text-4xl border-4 rounded-md px-5 py-3 mt-3 w-fit mx-auto border-blue-500 font-bold text-gray-800 mb-6 lg:mb-10 text-center">
             ثبت تراکنش جدید
           </h1>
 
-          <div className="bg-gray-100 p-1 rounded-xl mb-2 max-w-md mx-auto">
-            <div className="grid grid-cols-2 gap-2">
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setTransactionType("incomes")}
-                className={`py-3 rounded-lg text-center ${transactionType === "incomes"
-                  ? "bg-purple-500 text-white shadow-lg"
-                  : "bg-transparent text-gray-600"
-                  }`}
-              >
-                دریافتی
-              </motion.button>
-              <motion.button
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setTransactionType("outcomes")}
-                className={`py-3 rounded-lg text-center ${transactionType === "outcomes"
-                  ? "bg-[#ff6961] text-white shadow-lg"
-                  : "bg-transparent text-gray-600"
-                  }`}
-              >
-                پرداختی
-              </motion.button>
-            </div>
-          </div>
+      
 
           <form className="space-y-4 lg:space-y-6 max-w-6xl mx-auto">
             <div className="lg:grid lg:grid-cols-2 lg:gap-2">
@@ -389,7 +264,7 @@ const Page = () => {
                         <i className={`fas fa-chevron-down text-gray-400 transition-all duration-300 ${isCategoryDropdownOpen ? 'rotate-180 text-blue-500' : ''}`} />
                       </div>
                       {isCategoryDropdownOpen && (
-                        <div className="absolute z-50 w-full mt-2 bg-purple-50 rounded-xl border shadow-lg overflow-hidden">
+                        <div className="absolute z-50 w-full mt-2 bg-white rounded-xl border shadow-lg overflow-hidden">
                           <div className="max-h-48 overflow-y-auto">
                             {categories.map((category) => (
                               <div
@@ -411,7 +286,7 @@ const Page = () => {
                     <button
                       type="button"
                       onClick={() => setIsCategoryModalOpen(true)}
-                      className="bg-purple-500 text-white px-3 py-3 text-2xl rounded-md w-fit mx-2"
+                      className="bg-blue-500 text-white px-3 py-3 text-2xl rounded-xl w-fit mr-3"
                     >
                       +
                     </button>
@@ -421,18 +296,12 @@ const Page = () => {
                     isOpen={isCategoryModalOpen}
                     onClose={() => setIsCategoryModalOpen(false)}
                   />
-
-                  <div className="flex justify-between items-center">
-                    
-
-                  
-                  </div>
                 </div>
                
                 <motion.button
                   whileTap={{ scale: 0.95 }}
                   type="submit"
-                  className={`w-full lg:w-full lg:mx-auto block py-4 rounded-lg text-white font-medium shadow-lg ${transactionType === "incomes" ? "bg-purple-500" : "bg-[#ff6961]"
+                  className={`w-full lg:w-full mt-2 lg:mx-auto block py-4 rounded-lg text-white text-lg shadow-lg ${transactionType === "incomes" ? "bg-blue-500" : "bg-[#ff6961]"
                     }`}
                   onClick={handleSubmit}
                 >
@@ -447,4 +316,4 @@ const Page = () => {
     );
   }
 }
-export default Page;
+export default TransactionsPage;

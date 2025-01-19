@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { motion } from 'framer-motion';
-import { toast } from 'react-hot-toast';
+import { toast, Toaster } from 'react-hot-toast';
+import PriceInput from './priceInput';
 
 
 export const AddRequest = () => {
   const [amount, setAmount] = useState('');
   const [description, setDescription] = useState('');
-  const [date, setDate] = useState(new Date());
   const [isLoading, setIsLoading] = useState(false);
-
+  const handleAmountChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setAmount(e.target.value.replace(/,/g, ''));
+  };
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -24,6 +26,7 @@ export const AddRequest = () => {
           amount: Number(amount),
           description,
           Date: Date.now(),
+          status: 'pending'
         })
       });
 
@@ -37,11 +40,13 @@ export const AddRequest = () => {
         });
         setAmount('');
         setDescription('');
-        setDate(new Date());
+        
       } else {
         throw new Error('خطا در ثبت درخواست');
       }
     } catch (error) {
+      console.log(error);
+      
       toast.error('خطا در ثبت درخواست', {
         style: {
           direction: 'rtl',
@@ -58,9 +63,10 @@ export const AddRequest = () => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-4"
+      className="min-h-screen w-full flex flex-col items-center justify-center p-4"
     >
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 space-y-6">
+      <Toaster />
+      <div className="w-full  bg-white rounded-2xl shadow-lg border-t border p-6 space-y-6">
         <h2 className="text-2xl font-bold text-center text-gray-800">ثبت درخواست جدید</h2>
         
         <form onSubmit={handleSubmit} className="space-y-4" dir="rtl">
@@ -68,15 +74,11 @@ export const AddRequest = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               مبلغ (تومان)
             </label>
-            <input
-              type="number"
+            <PriceInput
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="مبلغ را وارد کنید"
-              required
-            />
-          </div>
+              onChange={handleAmountChange}
+              name="مبلغ درخواستی"
+            />          </div>
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">

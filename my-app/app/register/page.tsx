@@ -79,10 +79,10 @@ export default function RegisterPage() {
     }
   };
   return (
-    <div className="min-h-screen flex items-center justify-center bg-purple-200">
-      <div className="max-w-md w-full mx-2 space-y-8 p-8 bg-white/50 rounded-xl shadow-lg">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="max-w-md w-full mx-2 space-y-8 p-8 bg-white/50 rounded-xl shadow-lg border-t">
         <div>
-          <h2 className="mt-6 text-center text-3xl font-bold text-purple-700 border-b border-purple-200 pb-2">
+          <h2 className="mt-6 text-center text-3xl font-bold  border-b  pb-2">
             ساخت حساب کاربری
           </h2>
         </div>
@@ -100,7 +100,7 @@ export default function RegisterPage() {
                 name="name"
                 type="text"
                 required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 ring-1  focus:z-10 sm:text-sm"
+                className="appearance-none rounded-lg relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none ring-1 focus:z-10 sm:text-sm"
                 placeholder="نام کاربری"
                 dir="rtl"
                 value={name}
@@ -112,14 +112,14 @@ export default function RegisterPage() {
             </div>
             <div>
               <label htmlFor="password" className="sr-only">
-                رمز جیب
+                رمز ورود
               </label>
               <input
                 id="password"
                 name="password"
                 type="password"
                 required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 ring-1  focus:z-10 sm:text-sm"
+                className="appearance-none rounded-lg relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none ring-1 focus:z-10 sm:text-sm"
                 placeholder="رمز ورود"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -137,7 +137,7 @@ export default function RegisterPage() {
                 name="phoneNumber"
                 type="tel"
                 required
-                className="appearance-none rounded-lg relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-purple-500 ring-1  focus:z-10 sm:text-sm"
+                className="appearance-none rounded-lg relative block w-full px-3 py-2 placeholder-gray-500 text-gray-900 focus:outline-none ring-1  focus:z-10 sm:text-sm"
                 placeholder="شماره همراه"
                 dir="rtl"
                 value={phoneNumber}
@@ -155,7 +155,7 @@ export default function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:bg-blue-300"
             >
               {loading ? "در حال ساخت حساب کاربری" : "ثبت نام"}
             </button>
@@ -168,7 +168,7 @@ export default function RegisterPage() {
               href="/login"
               className="font-medium text-blue-600 hover:text-blue-500"
             >
-              یک جیب دارم منو ببر تو همون
+              ورود به حساب کاربری
             </Link>
           </p>
         </div>
